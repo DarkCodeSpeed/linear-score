@@ -1,19 +1,169 @@
 <!DOCTYPE html>
-<html lang="{{ user_language }}">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Language Selection</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Score Predictor</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            background-color: #f0f4f8;
+            color: #333;
+            font-family: 'Arial', sans-serif;
+        }
+        nav {
+            background-color: #343a40;
+        }
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        .sidebar {
+            background-color: #495057;
+            color: #fff;
+            padding: 20px;
+            position: fixed;
+            top: 56px; /* Navbar height */
+            left: 0;
+            width: 250px;
+            height: calc(100% - 56px);
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            transform: translateX(-100%);
+        }
+        .sidebar.active {
+            transform: translateX(0);
+        }
+        .sidebar h4 {
+            color: #ffc107;
+            margin-bottom: 20px;
+        }
+        .sidebar .nav-link {
+            color: #dee2e6;
+            transition: color 0.3s;
+        }
+        .sidebar .nav-link:hover {
+            color: #ffc107;
+        }
+        .content {
+            margin-left: 20px;
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+        }
+        .content.expanded {
+            margin-left: 270px; /* Sidebar width */
+        }
+        footer {
+            background-color: #343a40;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+        footer .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .social-icons {
+            margin-top: 10px;
+        }
+        .social-icons a {
+            font-size: 20px;
+            transition: color 0.3s;
+            color: #fff;
+            margin: 0 10px;
+        }
+        .social-icons a:hover {
+            color: #ffc107;
+        }
+        h2 {
+            color: #007bff;
+        }
+        .btn-toggle {
+            background-color: #ffc107;
+            color: #343a40;
+        }
+        .btn-toggle:hover {
+            background-color: #e0a800;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: fixed;
+                transform: translateX(-100%);
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            .content {
+                margin-left: 0;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>{% trans "Select your language:" %}</h1>
-    <form method="post" action="{% url 'set_language' %}">
-        {% csrf_token %}
-        <select name="language" onchange="this.form.submit()">
-            {% for lang in LANGUAGES %}
-                <option value="{{ lang.0 }}" {% if lang.0 == user_language %}selected{% endif %}>{{ lang.1 }}</option>
-            {% endfor %}
-        </select>
-    </form>
-    <p>{% trans "Your selected language is:" %} {{ user_language }}</p>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="#">Score Predictor</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#login">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#signup">Sign Up</a>
+                </li>
+            </ul>
+            <button id="toggleSidebar" class="btn btn-toggle ml-3">Toggle Sidebar</button>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <h4>Feature Guide</h4>
+        <ul class="list-unstyled">
+            <li><a class="nav-link" href="{% url 'predict_score' %}">Score Prediction</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content" id="content">
+        <h2>Welcome to the Student Score Predictor!</h2>
+        <p>Your one-stop solution for predicting student scores based on various features.</p>
+        <p>Select an option from the sidebar to learn more about our features.</p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; <span id="currentYear"></span> Student Score Predictor. All rights reserved.</p>
+            <div class="social-icons">
+                <a href="#" class="text-light mr-2"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-light mr-2"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-light"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#toggleSidebar').click(function() {
+                $('#sidebar').toggleClass('active');
+                $('#content').toggleClass('expanded');
+            });
+
+            // Set the current year in the footer
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+        });
+    </script>
 </body>
 </html>

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Score Prediction</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body {
             background: linear-gradient(135deg, #e1f5fe, #fce4ec);
@@ -49,6 +50,10 @@
             border: none;
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: scale(1.05);
         }
         .footer {
             background-color: #f8f9fa;
@@ -61,7 +66,19 @@
             margin: 0;
             color: #6c757d;
         }
-
+        .navbar {
+            background-color: #007bff;
+            z-index: 1000;
+        }
+        .navbar-brand, .navbar-nav .nav-link {
+            color: white;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #f8f9fa;
+        }
+        .nav-icon {
+            margin-right: 5px;
+        }
         /* Responsive Styles */
         @media (max-width: 576px) {
             body {
@@ -71,27 +88,61 @@
                 padding: 15px;
             }
             h2 {
-                font-size: 1.2em; /* Smaller font size */
+                font-size: 1.2em;
             }
             h3 {
-                font-size: 1em; /* Smaller font size */
+                font-size: 1em;
             }
             .submit-btn {
-                font-size: 0.8em; /* Smaller font size */
+                font-size: 0.8em;
             }
             .footer p {
-                font-size: 0.7em; /* Smaller font size */
+                font-size: 0.7em;
             }
             .form-group label {
-                font-size: 0.9em; /* Smaller font size */
+                font-size: 0.9em;
             }
             .form-control {
-                font-size: 0.9em; /* Smaller font size */
+                font-size: 0.9em;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">ScorePredictor</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-home nav-icon"></i>Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-info-circle nav-icon"></i>About</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-cogs nav-icon"></i>Services
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">Service 1</a>
+                            <a class="dropdown-item" href="#">Service 2</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">More Services</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-envelope nav-icon"></i>Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <div class="container-fluid py-5 flex-fill">
         <div class="row justify-content-center">
             <div class="col-12 col-md-10 col-lg-8">
@@ -177,9 +228,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">Scores Overview</h5>
                                 <ul class="list-group list-group-flush">
-                                    {% for score in predicted_scores %}
-                                        <li class="list-group-item">Predicted Score: <strong>{{ score }}</strong></li>
-                                    {% endfor %}
+                                    <li class="list-group-item">Predicted Score: <strong>{{ predicted_scores }}</strong></li>
                                 </ul>
                             </div>
                         </div>

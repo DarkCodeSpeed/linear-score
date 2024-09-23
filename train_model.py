@@ -1,10 +1,11 @@
 import pandas as pd
 import joblib
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.compose import ColumnTransformer
-from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
 
 # Load the dataset
 data = pd.read_csv('StudentsPerformance.csv')  # Update with the correct path
@@ -32,16 +33,33 @@ preprocessor = ColumnTransformer(
     ]
 )
 
-# Create the final pipeline
+# Create a pipeline with Random Forest Regressor
 pipeline = Pipeline(steps=[
     ('preprocessor', preprocessor),
-    ('regressor', LinearRegression())
+    ('regressor', RandomForestRegressor(random_state=42))
 ])
 
-# Train the model
-pipeline.fit(X_train, y_train)
+# Hyperparameter tuning using GridSearchCV
+param_grid = {
+    'regressor__n_estimators': [100, 200],
+    'regressor__max_depth': [None, 10, 20],
+    'regressor__min_samples_split': [2, 5, 10]
+}
+
+grid_search = GridSearchCV(pipeline, param_grid, cv=5, scoring='neg_mean_squared_error', n_jobs=-1)
+grid_search.fit(X_train, y_train)
+
+# Best model from grid search
+best_model = grid_search.best_estimator_
+
+# Make predictions and evaluate
+y_pred = best_model.predict(X_test)
+
+# Calculate Mean Squared Error
+mse = mean_squared_error(y_test, y_pred)
+print(f'Mean Squared Error: {mse}')
 
 # Save the model
-joblib.dump(pipeline, 'student_score_model.pkl')
+joblib.dump(best_model, 'student_score_model_rf.pkl')
 
-print("Model trained and saved as student_score_model.pkl")
+print("Model trained and saved as student_score_model_rf.pkl")

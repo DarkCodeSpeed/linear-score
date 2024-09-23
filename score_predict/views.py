@@ -14,7 +14,7 @@ pipeline = None  # Global variable for the loaded pipeline
 def load_model():
     global pipeline
     if pipeline is None:
-        model_path = os.path.join(settings.BASE_DIR, 'student_score_model.pkl')
+        model_path = os.path.join(settings.BASE_DIR, 'student_score_model_rf.pkl')
         pipeline = joblib.load(model_path)
 
 
@@ -45,7 +45,7 @@ def predict_score(request):
                                        columns=['gender', 'race/ethnicity', 'parental level of education', 'lunch', 'test preparation course', 'math score', 'reading score'])
 
             # Predict scores
-            predicted_scores = pipeline.predict(test_input)
+            predicted_scores = round(pipeline.predict(test_input)[0], 2)
 
             return render(request, 'predict_score.html', {'form': form, 'predicted_scores': predicted_scores})
     else:
@@ -55,12 +55,9 @@ def predict_score(request):
 
 
 
-
-
-
 def home(request):
-    user_language = request.LANGUAGE_CODE
-    return render(request, 'home.html', {'user_language': user_language})
+    return render(request, 'home.html')
+
 
 def set_language(request):
     if 'language' in request.POST:
