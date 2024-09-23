@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="{{ request.LANGUAGE_CODE }}">
+<head>
+    <meta charset="UTF-8">
+    <title>Select Language</title>
+</head>
+<body>
+    <h1>{% trans "Select Your Language" %}</h1>
+    <form method="post">
+        {% csrf_token %}
+        <select name="language">
+            <option value="en">English</option>
+            <option value="fa">Persian</option>
+            <!-- Add other languages here -->
+        </select>
+        <button type="submit">{% trans "Submit" %}</button>
+    </form>
+</body>
+</html>
