@@ -221,14 +221,21 @@
                 </div>
 
                 <!-- Display Predicted Scores -->
-                {% if predicted_scores %}
+                {% if data %}
                     <div class="mt-5">
                         <h3 class="text-center">Predicted Scores</h3>
                         <div class="card mt-3">
                             <div class="card-body">
                                 <h5 class="card-title">Scores Overview</h5>
                                 <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">Predicted Score: <strong>{{ predicted_scores }}</strong></li>
+                                    <li class="list-group-item">Gender: <strong>{{ data.gender }}</strong></li>
+                                    <li class="list-group-item">Predicted Score: <strong>{{ data.predicted_score }}</strong></li>
+                                    <li class="list-group-item">Lunch: <strong>{{ data.lunch }}</strong></li>
+                                    <li class="list-group-item">Reading Score: <strong>{{ data.reading_score }}</strong></li>
+                                    <li class="list-group-item">Math Score: <strong>{{ data.math_score }}</strong></li>
+                                    <li class="list-group-item">test_preparation: <strong>{{ data.test_preparation }}</strong></li>
+                                    <li class="list-group-item">parental_education: <strong>{{ data.parental_education }}</strong></li>
+                                    <li class="list-group-item">race_ethnicity: <strong>{{ data.race_ethnicity }}</strong></li>
                                 </ul>
                             </div>
                         </div>

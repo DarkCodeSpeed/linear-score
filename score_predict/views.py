@@ -45,9 +45,20 @@ def predict_score(request):
                                        columns=['gender', 'race/ethnicity', 'parental level of education', 'lunch', 'test preparation course', 'math score', 'reading score'])
 
             # Predict scores
-            predicted_scores = round(pipeline.predict(test_input)[0], 2)
+            predicted_score = round(pipeline.predict(test_input)[0], 2)
 
-            return render(request, 'predict_score.html', {'form': form, 'predicted_scores': predicted_scores})
+            data = {
+                "gender": gender,
+                "race_ethnicity": race_ethnicity,
+                "parental_education": parental_education,
+                "lunch": lunch,
+                "test_preparation": test_preparation,
+                "math_score": math_score,
+                "reading_score": reading_score,
+                "predicted_score": predicted_score,
+            }
+
+            return render(request, 'predict_score.html', {'form': form, 'data': data})
     else:
         form = StudentForm()
 
@@ -57,11 +68,3 @@ def predict_score(request):
 
 def home(request):
     return render(request, 'home.html')
-
-
-def set_language(request):
-    if 'language' in request.POST:
-        language = request.POST['language']
-        translation.activate(language)
-        request.session[translation.LANGUAGE_SESSION_KEY] = language
-    return redirect('home')
